@@ -5,7 +5,7 @@ namespace MusicDataIngestion
     public class Settings
     {
         private static IConfiguration Config => new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.json", false, false)
                 .Build();
 
         public static string ElasticUrl => Config["ElasticUrl"];

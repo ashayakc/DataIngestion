@@ -35,6 +35,8 @@ services:
     entrypoint: "dotnet MusicDataIngestion.dll"
     depends_on:
       - elasticsearch
+    networks:
+      - elastic
 
 networks:
     elastic:
