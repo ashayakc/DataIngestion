@@ -35,9 +35,9 @@ namespace MusicDataIngestion
             var client = new ElasticClient(settings);
             serviceCollection.AddSingleton<IElasticClient>(provider => client);
 
-            serviceCollection.AddScoped<IDataProcessor, ArtistProcessor>();
-            serviceCollection.AddScoped<IDataProcessor, ArtistCollectionProcessor>();
-            serviceCollection.AddScoped<IDataProcessor, CollectionMatchProcessor>();
+            serviceCollection.AddScoped<IDataProcessor>(provider => new ArtistProcessor(Settings.ArtistDataFolderPath));
+            serviceCollection.AddScoped<IDataProcessor>(provider => new ArtistCollectionProcessor(Settings.ArtistCollectionDataFolderPath));
+            serviceCollection.AddScoped<IDataProcessor>(provider => new CollectionMatchProcessor(Settings.CollectionMatchDataFolderPath));
             serviceCollection.AddScoped<IDataProcessor, CollectionProcessor>();
 
             return serviceCollection.BuildServiceProvider();

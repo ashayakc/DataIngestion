@@ -4,13 +4,19 @@ using Nest;
 
 namespace MusicDataIngestion.Processor
 {
-    internal class CollectionMatchProcessor : IDataProcessor
+    public class CollectionMatchProcessor : IDataProcessor
     {
+        private readonly string _artistDataFolderPath;
+        public CollectionMatchProcessor(string folderPath)
+        {
+            _artistDataFolderPath = folderPath;
+        }
+
         public string DataType { get => Keys.COLLECTION_MATCH; }
 
         public async Task ProcessAsync(IElasticClient elasticClient)
         {
-            using var collectionMatchReader = new StreamReader($@"{Settings.CollectionMatchDataFolderPath}");
+            using var collectionMatchReader = new StreamReader(_artistDataFolderPath);
             string collectionMatchLine;
             while ((collectionMatchLine = await collectionMatchReader.ReadLineAsync().ConfigureAwait(false)) != null)
             {

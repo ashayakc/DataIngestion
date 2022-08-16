@@ -4,7 +4,7 @@ using Nest;
 
 namespace MusicDataIngestion.Processor
 {
-    internal class DataProcessor
+    public class DataProcessor
     {
         private readonly IEnumerable<IDataProcessor> _dataProcessors;
         private readonly IElasticClient _elasticClient;

@@ -1,0 +1,11 @@
+#export_dateartist_idnameis_actual_artistview_urlartist_type_id
+#primaryKey:artist_id
+#dbTypes:BIGINTBIGINTVARCHAR(1000)BOOLEANVARCHAR(1000)INTEGER
+1157458Daniel Johnston1https://lnk.fire.com/artist/daniel-johnston/id157458?uo=51
+1754259Mariss Jansons1https://lnk.fire.com/artist/mariss-jansons/id754259?uo=51
+1875728Clay Blaker1https://lnk.fire.com/artist/clay-blaker/id875728?uo=51
+114410113Juli1https://lnk.fire.com/artist/juli/id14410113?uo=51
+115986478John Alexander1https://lnk.fire.com/artist/john-alexander/id15986478?uo=51
+117407065White Dragon1https://lnk.fire.com/artist/white-dragon/id17407065?uo=51
+17420827Ludovico Einaudi1https://lnk.fire.com/artist/ludovico-einaudi/id7420827?uo=51
+#recordsWritten:7

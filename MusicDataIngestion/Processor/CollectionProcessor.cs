@@ -4,7 +4,7 @@ using Nest;
 
 namespace MusicDataIngestion.Processor
 {
-    internal class CollectionProcessor : IDataProcessor
+    public class CollectionProcessor : IDataProcessor
     {
         public string DataType { get => Keys.COLLECTION; }
 
