@@ -30,6 +30,8 @@ services:
   ingestor:
     container_name: "music-collection-etl"
     build: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     entrypoint: "dotnet MusicDataIngestion.dll"
     depends_on:
       - elasticsearch
