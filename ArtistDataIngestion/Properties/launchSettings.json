@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ArtistDataIngestion": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_GCConserveMemory": "9",
+        "DOTNET_GCHeapCount": "10"
+      }
+    }
+  }
+}
