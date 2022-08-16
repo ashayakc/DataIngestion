@@ -1,4 +1,4 @@
-﻿namespace ArtistDataIngestion
+﻿namespace MusicDataIngestion
 {
     internal enum ExitCode
     {

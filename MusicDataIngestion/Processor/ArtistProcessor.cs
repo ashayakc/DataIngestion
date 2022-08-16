@@ -1,8 +1,8 @@
-﻿using ArtistDataIngestion.Constants;
-using ArtistDataIngestion.Models;
+﻿using MusicDataIngestion.Constants;
+using MusicDataIngestion.Models;
 using Nest;
 
-namespace ArtistDataIngestion.Processor
+namespace MusicDataIngestion.Processor
 {
     internal class ArtistProcessor : IDataProcessor
     {

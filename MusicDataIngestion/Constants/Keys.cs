@@ -1,4 +1,4 @@
-﻿namespace ArtistDataIngestion.Constants
+﻿namespace MusicDataIngestion.Constants
 {
     internal class Keys
     {

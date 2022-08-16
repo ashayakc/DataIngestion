@@ -15,22 +15,24 @@ services:
     networks:
       - elastic
 
-  redis:
-    container_name: "redis"
-    image: 'bitnami/redis:latest'
+  kibana:
+    container_name: "es-kibana"
+    image: kibana:8.3.3
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      ELASTICSEARCH_HOSTS: '["http://es-node:9200"]'
     ports:
-      - 6379:6379
+      - 5601:5601
+    depends_on:
+      - elasticsearch
     networks:
       - elastic
 
-  #ingestor:
-  #  container_name: "music-collection-etl"
-  #  build: 'Dockerfile'
-  #  entrypoint: "dotnet ...."
-  #  depends_on:
-  #    - elasticsearch
+  ingestor:
+    container_name: "music-collection-etl"
+    build: .
+    entrypoint: "dotnet MusicDataIngestion.dll"
+    depends_on:
+      - elasticsearch
 
 networks:
     elastic:

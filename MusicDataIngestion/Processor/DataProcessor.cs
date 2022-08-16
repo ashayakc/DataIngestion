@@ -1,8 +1,8 @@
-﻿using ArtistDataIngestion.Constants;
+﻿using MusicDataIngestion.Constants;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 
-namespace ArtistDataIngestion.Processor
+namespace MusicDataIngestion.Processor
 {
     internal class DataProcessor
     {

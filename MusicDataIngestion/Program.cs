@@ -1,9 +1,9 @@
-﻿using ArtistDataIngestion.Processor;
+﻿using MusicDataIngestion.Processor;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using System.Diagnostics;
 
-namespace ArtistDataIngestion
+namespace MusicDataIngestion
 {
     public class Program
     {

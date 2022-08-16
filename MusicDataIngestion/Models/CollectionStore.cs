@@ -1,4 +1,4 @@
-﻿namespace ArtistDataIngestion.Models
+﻿namespace MusicDataIngestion.Models
 {
     internal class CollectionStore
     {

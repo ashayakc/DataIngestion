@@ -1,6 +1,6 @@
 ﻿using Nest;
 
-namespace ArtistDataIngestion.Processor
+namespace MusicDataIngestion.Processor
 {
     internal interface IDataProcessor
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace ArtistDataIngestion
+namespace MusicDataIngestion
 {
     internal class Settings
     {
