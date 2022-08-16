@@ -9,13 +9,8 @@ namespace MusicDataIngestion
     {
         public async static Task<int> Main(String[] args)
         {
-            Console.WriteLine("Waiting");
-            Console.ReadLine();
             Console.WriteLine("Welcome to music collection data ingestion tool!");
             Console.WriteLine("Initializing components..");
-
-            //while (true)
-            //{ Thread.Sleep(1000); }
 
             var watch = new Stopwatch();
             watch.Start();

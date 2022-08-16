@@ -11,7 +11,6 @@ namespace MusicDataIngestion.Processor
         public async Task ProcessAsync(IElasticClient elasticClient)
         {
             var counter = 1;
-            long collectionId = 0;
             await foreach (var batch in ReadBatchesAsync($@"{Settings.CollectionDataFolderPath}"))
             {
                 var musicCollection = new List<MusicCollection>();
@@ -19,16 +18,14 @@ namespace MusicDataIngestion.Processor
 
                 foreach (var collectionLine in batch)
                 {
-                    try
-                    {
-                        if (collectionLine.StartsWith('#'))
-                            continue;
 
-                        musicCollection.Add(GetMusicCollection(collectionLine));
-                    }
-                    catch (Exception ex)
+                    if (collectionLine.StartsWith('#'))
+                        continue;
+
+                    var collection = GetMusicCollection(collectionLine);
+                    if(collection != null)
                     {
-                        Console.WriteLine($"Something went wrong when processing collection {collectionId} with message: {ex.Message}");
+                        musicCollection.Add(collection);
                     }
                 }
 
@@ -52,34 +49,43 @@ namespace MusicDataIngestion.Processor
 
         private static MusicCollection GetMusicCollection(string collectionLine)
         {
-            var columns = collectionLine.Split('\u0001');
-            var collectionId = long.Parse(columns[1]);
-            var artistIds = CollectionStore.ArtistCollections
-                                .Where(x => x.Key == collectionId)
-                                .SelectMany(x => x.Value)
-                                .Distinct();
-            var artists = artistIds.Select(artistId =>
+            long collectionId = 0;
+            try
             {
-                return new Artist
+                var columns = collectionLine.Split('\u0001');
+                collectionId = long.Parse(columns[1]);
+                var artistIds = CollectionStore.ArtistCollections
+                                    .Where(x => x.Key == collectionId)
+                                    .SelectMany(x => x.Value)
+                                    .Distinct();
+                var artists = artistIds.Select(artistId =>
                 {
-                    Id = artistId,
-                    Name = CollectionStore.Artists.ContainsKey(artistId) ? CollectionStore.Artists[artistId] : string.Empty
+                    return new Artist
+                    {
+                        Id = artistId,
+                        Name = CollectionStore.Artists.ContainsKey(artistId) ? CollectionStore.Artists[artistId] : string.Empty
+                    };
+
+                }).ToList();
+
+                return new MusicCollection
+                {
+                    Id = long.Parse(columns[1]),
+                    Name = columns[2],
+                    Url = columns[7],
+                    ImageUrl = columns[8],
+                    ReleaseDate = columns[9],
+                    Lebel = columns[11],
+                    IsCompilation = bool.TryParse(columns[16], out bool result),
+                    UPC = CollectionStore.CollectionMatches[collectionId],
+                    Artists = artists
                 };
-
-            }).ToList();
-
-            return new MusicCollection
+            }
+            catch (Exception ex)
             {
-                Id = long.Parse(columns[1]),
-                Name = columns[2],
-                Url = columns[7],
-                ImageUrl = columns[8],
-                ReleaseDate = columns[9],
-                Lebel = columns[11],
-                IsCompilation = bool.TryParse(columns[16], out bool result),
-                UPC = CollectionStore.CollectionMatches[collectionId],
-                Artists = artists
-            };
+                Console.WriteLine($"Something went wrong when processing collection {collectionId} with message: {ex.Message}");
+                return null!;
+            }
         }
 
         private static async IAsyncEnumerable<IEnumerable<string>> ReadBatchesAsync(string fileName)
