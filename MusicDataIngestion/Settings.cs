@@ -2,7 +2,7 @@
 
 namespace MusicDataIngestion
 {
-    internal class Settings
+    public class Settings
     {
         private static IConfiguration Config => new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)

@@ -1,6 +1,6 @@
 ﻿namespace MusicDataIngestion.Models
 {
-    internal class Artist
+    public class Artist
     {
         public long Id { get; set; }
         public string Name { get; set; }

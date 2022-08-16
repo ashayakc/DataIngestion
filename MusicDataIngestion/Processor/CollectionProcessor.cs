@@ -6,19 +6,28 @@ namespace MusicDataIngestion.Processor
 {
     public class CollectionProcessor : IDataProcessor
     {
+        private readonly IElasticClient _elasticClient;
+        private readonly string _collectionDataFolderPath;
+        private readonly int _batchLimit;
+        public CollectionProcessor(IElasticClient elasticClient, string folderPath, int batchLimit)
+        {
+            _elasticClient = elasticClient;
+            _collectionDataFolderPath = folderPath;
+            _batchLimit = batchLimit;
+        }
+
         public string DataType { get => Keys.COLLECTION; }
 
-        public async Task ProcessAsync(IElasticClient elasticClient)
+        public async Task<bool> ProcessAsync()
         {
             var counter = 1;
-            await foreach (var batch in ReadBatchesAsync($@"{Settings.CollectionDataFolderPath}"))
+            await foreach (var batch in ReadBatchesAsync(_collectionDataFolderPath))
             {
                 var musicCollection = new List<MusicCollection>();
                 Console.WriteLine($"*** Processing Batch - {counter} ***");
 
                 foreach (var collectionLine in batch)
                 {
-
                     if (collectionLine.StartsWith('#'))
                         continue;
 
@@ -29,14 +38,14 @@ namespace MusicDataIngestion.Processor
                     }
                 }
 
-                elasticClient.BulkAll(musicCollection, x => x
+                _elasticClient.BulkAll(musicCollection, x => x
                                         .Index(Settings.IndexName)
                                         .BackOffTime("30s")
                                         .BackOffRetries(2)
                                         .RefreshOnCompleted()
                                         .ContinueAfterDroppedDocuments()
                                         .MaxDegreeOfParallelism(Environment.ProcessorCount)
-                                        .Size(Settings.BatchLimit)
+                                        .Size(_batchLimit)
                                     )
                                     .Wait(TimeSpan.FromMinutes(15), next =>
                                     {
@@ -45,6 +54,7 @@ namespace MusicDataIngestion.Processor
                 musicCollection.Clear();
                 counter++;
             }
+            return true;
         }
 
         private static MusicCollection GetMusicCollection(string collectionLine)
@@ -88,7 +98,7 @@ namespace MusicDataIngestion.Processor
             }
         }
 
-        private static async IAsyncEnumerable<IEnumerable<string>> ReadBatchesAsync(string fileName)
+        private async IAsyncEnumerable<IEnumerable<string>> ReadBatchesAsync(string fileName)
         {
             using var file = File.OpenText(fileName);
             var batchItems = new List<string>();
@@ -98,7 +108,7 @@ namespace MusicDataIngestion.Processor
                 // clear the batch list
                 batchItems.Clear();
 
-                for (int i = 0; i < Settings.BatchLimit; i++)
+                for (int i = 0; i < _batchLimit; i++)
                 {
                     if (file.EndOfStream)
                         break;

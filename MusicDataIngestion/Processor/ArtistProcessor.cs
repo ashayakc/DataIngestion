@@ -1,6 +1,5 @@
 ﻿using MusicDataIngestion.Constants;
 using MusicDataIngestion.Models;
-using Nest;
 
 namespace MusicDataIngestion.Processor
 {
@@ -14,7 +13,7 @@ namespace MusicDataIngestion.Processor
 
         public string DataType { get => Keys.ARTIST; }
 
-        public async Task ProcessAsync(IElasticClient elasticClient)
+        public async Task<bool> ProcessAsync()
         {
             using var artistReader = new StreamReader(_artistDataFolderPath);
             string artistLine;
@@ -27,6 +26,7 @@ namespace MusicDataIngestion.Processor
                 //ArtistId, Name
                 CollectionStore.Artists.Add(long.Parse(columns[1]), columns[2]);
             }
+            return true;
         }
     }
 }

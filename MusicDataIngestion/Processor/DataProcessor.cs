@@ -18,22 +18,22 @@ namespace MusicDataIngestion.Processor
         {
             Console.WriteLine("Analysing artist data..");
             var artistProcessor = _dataProcessors.FirstOrDefault(processor => processor.DataType.Equals(Keys.ARTIST, StringComparison.OrdinalIgnoreCase));
-            await artistProcessor!.ProcessAsync(_elasticClient).ConfigureAwait(false);
+            await artistProcessor!.ProcessAsync().ConfigureAwait(false);
             Console.WriteLine("Artist data analysing complete");
 
             Console.WriteLine("Analysing artist collection data..");
             var artistCollectionProcessor = _dataProcessors.FirstOrDefault(processor => processor.DataType.Equals(Keys.ARTIST_COLLECTION, StringComparison.OrdinalIgnoreCase));
-            await artistCollectionProcessor!.ProcessAsync(_elasticClient).ConfigureAwait(false);
+            await artistCollectionProcessor!.ProcessAsync().ConfigureAwait(false);
             Console.WriteLine("Artist collection data analysing complete");
 
             Console.WriteLine("Analysing collection match data..");
             var collectionMatchProcessor = _dataProcessors.FirstOrDefault(processor => processor.DataType.Equals(Keys.COLLECTION_MATCH, StringComparison.OrdinalIgnoreCase));
-            await collectionMatchProcessor!.ProcessAsync(_elasticClient).ConfigureAwait(false);
+            await collectionMatchProcessor!.ProcessAsync().ConfigureAwait(false);
             Console.WriteLine("Collection match data analysing complete");
 
             Console.WriteLine("Processing collection data..");
             var collectionProcessor = _dataProcessors.FirstOrDefault(processor => processor.DataType.Equals(Keys.COLLECTION, StringComparison.OrdinalIgnoreCase));
-            await collectionProcessor!.ProcessAsync(_elasticClient).ConfigureAwait(false);
+            await collectionProcessor!.ProcessAsync().ConfigureAwait(false);
             Console.WriteLine("Collection processing complete");
         }
     }

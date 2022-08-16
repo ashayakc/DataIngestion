@@ -38,7 +38,7 @@ namespace MusicDataIngestion
             serviceCollection.AddScoped<IDataProcessor>(provider => new ArtistProcessor(Settings.ArtistDataFolderPath));
             serviceCollection.AddScoped<IDataProcessor>(provider => new ArtistCollectionProcessor(Settings.ArtistCollectionDataFolderPath));
             serviceCollection.AddScoped<IDataProcessor>(provider => new CollectionMatchProcessor(Settings.CollectionMatchDataFolderPath));
-            serviceCollection.AddScoped<IDataProcessor, CollectionProcessor>();
+            serviceCollection.AddScoped<IDataProcessor>(provider => new CollectionProcessor(client, Settings.CollectionDataFolderPath, Settings.BatchLimit));
 
             return serviceCollection.BuildServiceProvider();
         }
