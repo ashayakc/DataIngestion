@@ -101,12 +101,10 @@ namespace MusicDataIngestion.Processor
         private async IAsyncEnumerable<IEnumerable<string>> ReadBatchesAsync(string fileName)
         {
             using var file = File.OpenText(fileName);
-            var batchItems = new List<string>();
-
             while (!file.EndOfStream)
             {
                 // clear the batch list
-                batchItems.Clear();
+                var batchItems = new List<string>();
 
                 for (int i = 0; i < _batchLimit; i++)
                 {
@@ -115,7 +113,6 @@ namespace MusicDataIngestion.Processor
 
                     batchItems.Add((await file.ReadLineAsync().ConfigureAwait(false))!);
                 }
-
                 yield return batchItems;
             }
 
