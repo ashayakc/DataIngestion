@@ -53,6 +53,7 @@ namespace MusicDataIngestion.Processor
                                     });
                 musicCollection.Clear();
                 counter++;
+                GC.Collect();
             }
             return true;
         }
@@ -100,23 +101,23 @@ namespace MusicDataIngestion.Processor
 
         private async IAsyncEnumerable<IEnumerable<string>> ReadBatchesAsync(string fileName)
         {
-            using var file = File.OpenText(fileName);
-            while (!file.EndOfStream)
+            using var reader = new StreamReader(fileName);
+            while (!reader.EndOfStream)
             {
                 // clear the batch list
                 var batchItems = new List<string>();
 
                 for (int i = 0; i < _batchLimit; i++)
                 {
-                    if (file.EndOfStream)
+                    if (reader.EndOfStream)
                         break;
 
-                    batchItems.Add((await file.ReadLineAsync().ConfigureAwait(false))!);
+                    batchItems.Add((await reader.ReadLineAsync().ConfigureAwait(false))!);
                 }
                 yield return batchItems;
             }
 
-            file.Close();
+            reader.Close();
         }
     }
 }
